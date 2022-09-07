@@ -1,6 +1,6 @@
 #[allow(dead_code)]
 use colored;
-use colored::{Colorize, ColoredString};
+use colored::{ColoredString, Colorize};
 #[derive(Clone, Copy)]
 enum Turn {
     Player,
@@ -34,24 +34,32 @@ impl GameState {
             current_turn: *turn,
         }
     }
-    fn apply(&mut self) -> &Self {
-        todo!();
+    fn apply(&mut self, position: usize, piece: Option<Piece>) {
+        self.board[position] = piece;
+    }
+    fn winner(&self) -> Option<Piece> {
+        //todo
+        None
     }
     fn print(&self) {
         let red = format!("O").bright_red().bold();
         let yellow = format!("O").bright_yellow().bold();
-    let none = format!("").bold();
-        let gui_board: Vec<&ColoredString> = self.board.iter().map(|f| match f {
-            Some(Piece::Red) => &red,
-            Some(Piece::Yellow) => &yellow,
-            None => &none,
-        }).collect();
+        let none = format!("").bold();
+        let gui_board: Vec<&ColoredString> = self
+            .board
+            .iter()
+            .map(|f| match f {
+                Some(Piece::Red) => &red,
+                Some(Piece::Yellow) => &yellow,
+                None => &none,
+            })
+            .collect();
         for row in 0..6 {
             println!("+---+---+---+---+---+---+---+");
             for col in 0..7 {
                 print!("| {} ", gui_board[row * 6 + col]);
             }
-            print!("|\n")
+            println!("|")
         }
         println!("+---+---+---+---+---+---+---+")
     }
